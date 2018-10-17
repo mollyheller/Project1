@@ -108,7 +108,7 @@ def mySortPrint(data, key, fileName):
 	sorted_list= sorted(data, key= lambda x: x[key])
 	new_list= []
 	for x in sorted_list:
-		new_list.append((x["First"] + ", " + x["Last"]+ ", " +  x["Email"]+ "\n"))
+		new_list.append((x["First"].strip() + "," + x["Last"].strip()+ "," +  x["Email"].strip()+ "\n"))
 		
 		final_file= open(fileName, 'w')
 		for x in new_list:
@@ -118,9 +118,6 @@ def mySortPrint(data, key, fileName):
 			#w= csv.writer(f)
 			#for x in new_list:
 				#w.writerow(x)
-
-
-
 
 ## We have provided simple test() function used in main() to print what each function returns vs. what it's supposed to return.
 def test(got, expected, pts):
@@ -134,34 +131,35 @@ def test(got, expected, pts):
   return score
 
 
+
 # Provided main() calls the above functions with interesting inputs, using test() to check if each result is correct or not.
 def main():
 	total = 0
 	print("Read in Test data and store as a list of dictionaries")
 	data = getData('P1DataA.csv')
-	
+	data2 = getData('P1DataB.csv')
 	total += test(type(data),type([]),50)
 
 	print()
 	print("First student sorted by First name:")
 	total += test(mySort(data,'First'),'Abbot Le',25)
-	
+	total += test(mySort(data2,'First'),'Adam Rocha',25)
 
 	print("First student sorted by Last name:")
 	total += test(mySort(data,'Last'),'Elijah Adams',25)
-	
+	total += test(mySort(data2,'Last'),'Elijah Adams',25)
 
 	print("First student sorted by Email:")
 	total += test(mySort(data,'Email'),'Hope Craft',25)
-	
+	total += test(mySort(data2,'Email'),'Orli Humphrey',25)
 
 	print("\nEach grade ordered by size:")
 	total += test(classSizes(data),[('Junior', 28), ('Senior', 27), ('Freshman', 23), ('Sophomore', 22)],25)
-
+	total += test(classSizes(data2),[('Senior', 26), ('Junior', 25), ('Freshman', 21), ('Sophomore', 18)],25)
 
 	print("\nThe most common month of the year to be born is:")
 	total += test(findMonth(data),3,15)
-
+	total += test(findMonth(data2),3,15)
 
 	print("\nSuccessful sort and print to file:")
 	mySortPrint(data,'Last','results.csv')

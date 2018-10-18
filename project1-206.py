@@ -1,50 +1,118 @@
+import csv
+import matplotlib.pyplot as plt
 import os
 import filecmp
 from dateutil.relativedelta import *
 from datetime import date
 
-
 def getData(file):
-# get a list of dictionary objects from the file
-#Input: file name
-#Ouput: return a list of dictionary objects where
-#the keys are from the first row in the data. and the values are each of the other rows
+	data= open(file, 'r')
+	list_of_dict= []
+	for line in data.readlines()[1:]:
+		dict= {}
+		values= line.split(",")
+		first= values[0].strip()
+		last= values[1].strip()
+		email= values[2].strip()
+		Class= values[3].strip()
+		DOB= values[4].strip()
 
-	pass
+		dict["First"]= first
+		dict["Last"]= last 
+		dict["Email"]= email
+		dict["Class"]= Class
+		dict["DOB"]= DOB
 
-def mySort(data,col):
-# Sort based on key/column
-#Input: list of dictionaries and col (key) to sort on
-#Output: Return the first item in the sorted list as a string of just: firstName lastName
+		list_of_dict.append(dict)
 
-	pass
+	return list_of_dict
+
+
+def mySort(data, key):
+	sorted_list= sorted(data, key= lambda x: x[key])
+	new_list= []
+	for x in sorted_list:
+		new_list.append((x["First"] + " " + x["Last"]))
+	return new_list[0]
 
 
 def classSizes(data):
-# Create a histogram
-# Input: list of dictionaries
-# Output: Return a list of tuples sorted by the number of students in that class in
-# descending order
-# [('Senior', 26), ('Junior', 25), ('Freshman', 21), ('Sophomore', 18)]
+	senior= 0
+	junior= 0
+	sophomore= 0
+	freshman= 0
+	for x in data:
+		if x["Class"]== 'Senior':
+			senior+= 1
+		elif x["Class"]== 'Junior':
+			junior+= 1
+		elif x["Class"]== 'Sophomore':
+			sophomore+= 1
+		elif x["Class"]== 'Freshman':
+			freshman+= 1
+	classes= ['Senior', 'Junior', 'Sophomore', 'Freshman']
+	number= [senior, junior, sophomore, freshman]
+	class_list= (('Senior', senior), ('Junior', junior), ('Sophomore', sophomore),('Freshman', freshman))
+	new_list= sorted(class_list, key= lambda x: x[-1], reverse= True)
+	plt.bar(classes, number, label= 'Class Distribution', color= 'r')
+	plt.show()
+	return new_list
 
-	pass
 
+def findMonth(data):
+	January= 0
+	February= 0
+	March= 0
+	April= 0
+	May= 0
+	June= 0
+	July=0
+	August= 0
+	September= 0
+	October= 0
+	November= 0
+	December= 0
+	for student in data:
+		if student["DOB"].split("/")[0]== '1':
+			January+= 1
+		if student["DOB"].split("/")[0]== '2':
+			February+= 1
+		if student["DOB"].split("/")[0]== '3':
+			March+= 1
+		if student["DOB"].split("/")[0]== '4':
+			April+= 1
+		if student["DOB"].split("/")[0]== '5':
+			May+= 1
+		if student["DOB"].split("/")[0]== '6':
+			June+= 1
+		if student["DOB"].split("/")[0]== '7':
+			July+= 1
+		if student["DOB"].split("/")[0]== '8':
+			August+= 1
+		if student["DOB"].split("/")[0]== '9':
+			September+= 1
+		if student["DOB"].split("/")[0]== '10':
+			October+= 1
+		if student["DOB"].split("/")[0]== '11':
+			November+= 1
+		if student["DOB"].split("/")[0]== '12':
+			December+= 1
+	months= (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+	distribution= (January, February, March, April, May, June, July, August, September, October, November, December)
+	month_distribution= list(zip(months, distribution))
+	common= sorted(month_distribution, key= lambda x: x[-1], reverse= True)
+	print(common)
+	return common[0][0]
 
-def findMonth(a):
-# Find the most common birth month form this data
-# Input: list of dictionaries
-# Output: Return the month (1-12) that had the most births in the data
-
-	pass
-
-def mySortPrint(a,col,fileName):
-#Similar to mySort, but instead of returning single
-#Student, the sorted data is saved to a csv file.
-# as fist,last,email
-#Input: list of dictionaries, col (key) to sort by and output file name
-#Output: No return value, but the file is written
-
-	pass
+def mySortPrint(data, key, fileName):
+	sorted_list= sorted(data, key= lambda x: x[key])
+	new_list= []
+	for x in sorted_list:
+		new_list.append((x["First"].strip()+","+x["Last"].strip()+","+x["Email"].strip()+"\n"))
+		
+		final_file= open(fileName, 'w')
+		for x in new_list:
+			final_file.write(x)
 
 def findAge(a):
 # def findAge(a):

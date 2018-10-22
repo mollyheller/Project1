@@ -1,3 +1,4 @@
+#Worked with Hannah Kriftcher and Sam Sherman to discuss ideas on how to attempt each function
 import csv
 import matplotlib.pyplot as plt
 import os
